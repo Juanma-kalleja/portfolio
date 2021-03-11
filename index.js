@@ -1,56 +1,37 @@
+function loadPage(pwd) {
 
-const name = 'world';
-console.log(`Hello ${name}`);
+    var hash= pwd;
+    hash= Sha1.hash(pwd);
+    var url= hash + "/index.html";
 
-function animalMap(options) {
-  // with no parameters
-  if (!options) {
-  //Using reduce method, create a matrix with arrays of two values:
-  //1. Location
-  //2. Array with animals in this location
-  //If the location already exists, includes animal directly in the animals array.
-  //Then reduce matix to get the final object
-    const entries = data.animals.reduce((arr, animal) => {
-      if(arr.some(item => item[0] === animal.location)) {
-        arr.forEach(item => {
-          if(item[0] === animal.location){
-            item[1].push(animal.name);
-          }
-        })
-      } else {
-        arr.push([animal.location, [animal.name]]);
-      }
-      
-      return arr;
-    },[]);
-    return entries.reduce((obj, val) =>{
-      obj[val[0]] = val[1];
-      return obj;
-    },{});
+    $.ajax({
+        url : url,
+        dataType : "html",
+        success : function(data) {
 
-  } else if (options.includeNames) {
+            window.location= url;
 
-    //includeNames: true
-    const entries = data.animals.reduce((arr, animal) => {
-      //Object with resident's names:
-      let obj = {};
-        obj[animal.name] = animal.residents.map(item => item.name);
-      if(arr.some(item => item[0] === animal.location)) {
-        arr.forEach(item => {
-          if(item[0] === animal.location){
-            item[1].push(obj);
-          }
-        })
-      } else {
-        arr.push([animal.location, [obj]]);
-       }
-      
-      return arr;
-    },[]);
-    return entries.reduce((obj, val) =>{
-      obj[val[0]] = val[1];
-      return obj;
-    },{});
+        },
+        error : function(xhr, ajaxOptions, thrownError) {
 
-  }
+
+            parent.location.hash= hash;
+
+            //$("#wrongPassword").show();
+            $("#password").attr("placeholder","wrong password");
+            $("#password").val("");
+        }
+    });
 }
+
+
+$("#loginbutton").on("click", function() {
+    loadPage($("#password").val());
+});
+$("#password").keypress(function(e) {
+    if (e.which == 13) {
+
+        loadPage($("#password").val());
+    }
+});
+$("#password").focus();
