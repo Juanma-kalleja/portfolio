@@ -1,37 +1,37 @@
-function loadPage(pwd) {
+// function loadPage(pwd) {
 
-    var hash= pwd;
-    hash= Sha1.hash(pwd);
-    var url= hash + "/index.html";
+//     var hash= pwd;
+//     hash= Sha1.hash(pwd);
+//     var url= hash + "/index.html";
 
-    $.ajax({
-        url : url,
-        dataType : "html",
-        success : function(data) {
+//     $.ajax({
+//         url : url,
+//         dataType : "html",
+//         success : function(data) {
 
-            window.location= url;
+//             window.location= url;
 
-        },
-        error : function(xhr, ajaxOptions, thrownError) {
-
-
-            parent.location.hash= hash;
-
-            //$("#wrongPassword").show();
-            $("#password").attr("placeholder","wrong password");
-            $("#password").val("");
-        }
-    });
-}
+//         },
+//         error : function(xhr, ajaxOptions, thrownError) {
 
 
-$("#loginbutton").on("click", function() {
-    loadPage($("#password").val());
-});
-$("#password").keypress(function(e) {
-    if (e.which == 13) {
+//             parent.location.hash= hash;
 
-        loadPage($("#password").val());
-    }
-});
-$("#password").focus();
+//             //$("#wrongPassword").show();
+//             $("#password").attr("placeholder","wrong password");
+//             $("#password").val("");
+//         }
+//     });
+// }
+
+
+// $("#loginbutton").on("click", function() {
+//     loadPage($("#password").val());
+// });
+// $("#password").keypress(function(e) {
+//     if (e.which == 13) {
+
+//         loadPage($("#password").val());
+//     }
+// });
+// $("#password").focus();
