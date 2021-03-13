@@ -117,79 +117,68 @@ parcelRequire = (function (modules, cache, entry, globalName) {
   }
 
   return newRequire;
-})({"node_modules/parcel-bundler/src/builtins/bundle-url.js":[function(require,module,exports) {
-var bundleURL = null;
+})({"index.js":[function(require,module,exports) {
+var name = 'world';
+console.log("Hello ".concat(name));
 
-function getBundleURLCached() {
-  if (!bundleURL) {
-    bundleURL = getBundleURL();
-  }
-
-  return bundleURL;
-}
-
-function getBundleURL() {
-  // Attempt to find the URL of the current script and use that as the base URL
-  try {
-    throw new Error();
-  } catch (err) {
-    var matches = ('' + err.stack).match(/(https?|file|ftp|chrome-extension|moz-extension):\/\/[^)\n]+/g);
-
-    if (matches) {
-      return getBaseURL(matches[0]);
-    }
-  }
-
-  return '/';
-}
-
-function getBaseURL(url) {
-  return ('' + url).replace(/^((?:https?|file|ftp|chrome-extension|moz-extension):\/\/.+)\/[^/]+$/, '$1') + '/';
-}
-
-exports.getBundleURL = getBundleURLCached;
-exports.getBaseURL = getBaseURL;
-},{}],"node_modules/parcel-bundler/src/builtins/css-loader.js":[function(require,module,exports) {
-var bundle = require('./bundle-url');
-
-function updateLink(link) {
-  var newLink = link.cloneNode();
-
-  newLink.onload = function () {
-    link.remove();
-  };
-
-  newLink.href = link.href.split('?')[0] + '?' + Date.now();
-  link.parentNode.insertBefore(newLink, link.nextSibling);
-}
-
-var cssTimeout = null;
-
-function reloadCSS() {
-  if (cssTimeout) {
-    return;
-  }
-
-  cssTimeout = setTimeout(function () {
-    var links = document.querySelectorAll('link[rel="stylesheet"]');
-
-    for (var i = 0; i < links.length; i++) {
-      if (bundle.getBaseURL(links[i].href) === bundle.getBundleURL()) {
-        updateLink(links[i]);
+function animalMap(options) {
+  // with no parameters
+  if (!options) {
+    //Using reduce method, create a matrix with arrays of two values:
+    //1. Location
+    //2. Array with animals in this location
+    //If the location already exists, includes animal directly in the animals array.
+    //Then reduce matix to get the final object
+    var entries = data.animals.reduce(function (arr, animal) {
+      if (arr.some(function (item) {
+        return item[0] === animal.location;
+      })) {
+        arr.forEach(function (item) {
+          if (item[0] === animal.location) {
+            item[1].push(animal.name);
+          }
+        });
+      } else {
+        arr.push([animal.location, [animal.name]]);
       }
-    }
 
-    cssTimeout = null;
-  }, 50);
+      return arr;
+    }, []);
+    return entries.reduce(function (obj, val) {
+      obj[val[0]] = val[1];
+      return obj;
+    }, {});
+  } else if (options.includeNames) {
+    //includeNames: true
+    var _entries = data.animals.reduce(function (arr, animal) {
+      //Object with resident's names:
+      var obj = {};
+      obj[animal.name] = animal.residents.map(function (item) {
+        return item.name;
+      });
+
+      if (arr.some(function (item) {
+        return item[0] === animal.location;
+      })) {
+        arr.forEach(function (item) {
+          if (item[0] === animal.location) {
+            item[1].push(obj);
+          }
+        });
+      } else {
+        arr.push([animal.location, [obj]]);
+      }
+
+      return arr;
+    }, []);
+
+    return _entries.reduce(function (obj, val) {
+      obj[val[0]] = val[1];
+      return obj;
+    }, {});
+  }
 }
-
-module.exports = reloadCSS;
-},{"./bundle-url":"node_modules/parcel-bundler/src/builtins/bundle-url.js"}],"styles.css":[function(require,module,exports) {
-var reloadCSS = require('_css_loader');
-
-module.hot.dispose(reloadCSS);
-module.hot.accept(reloadCSS);
-},{"_css_loader":"node_modules/parcel-bundler/src/builtins/css-loader.js"}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -393,5 +382,5 @@ function hmrAcceptRun(bundle, id) {
     return true;
   }
 }
-},{}]},{},["node_modules/parcel-bundler/src/builtins/hmr-runtime.js"], null)
-//# sourceMappingURL=/styles.8986bff4.js.map
+},{}]},{},["node_modules/parcel-bundler/src/builtins/hmr-runtime.js","index.js"], null)
+//# sourceMappingURL=/proyecto_portfolio.e31bb0bc.js.map
